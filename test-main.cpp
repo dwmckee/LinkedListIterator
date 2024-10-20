@@ -79,15 +79,25 @@ bool test_stack()
 // _will_ work). To that end, we write specialized templates here before
 // defining the deque tests
 template <>
-LinkedListIterator<deque_node, default_next<deque_node>>
-begin(dl_deque list) {
+LinkedListIterator<deque_node> begin(dl_deque &list) {
   default_next<deque_node> next;
-  return LinkedListIterator<deque_node, default_next<deque_node>>(next(list.sentinal));
+  return LinkedListIterator<deque_node>(next(list.sentinal));
 }
 
 template <>
-LinkedListIterator<deque_node, default_next<deque_node>> end(dl_deque list) {
-  return LinkedListIterator<deque_node, default_next<deque_node>>(list.sentinal);
+LinkedListIterator<deque_node, default_prev<deque_node>> rbegin(dl_deque &list) {
+  default_prev<deque_node> next;
+  return LinkedListIterator<deque_node, default_prev<deque_node>>(next(list.sentinal));
+}
+
+template <>
+LinkedListIterator<deque_node> end(dl_deque &list) {
+  return LinkedListIterator<deque_node>(list.sentinal);
+}
+
+template <>
+LinkedListIterator<deque_node, default_prev<deque_node>> rend(dl_deque &list) {
+  return LinkedListIterator<deque_node, default_prev<deque_node>>(list.sentinal);
 }
 
 

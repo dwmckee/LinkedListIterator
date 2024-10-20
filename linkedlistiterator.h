@@ -99,31 +99,40 @@ auto LinkedListIterator<NODE, NEXT>::operator++(int) -> LinkedListIterator {
 // As with the advance functor we provide default implmentations for the naive
 // cases. Specializations should be provided for more elaborate lists.
 //
-// The "r" reverse variants should be covered by using an appropriate advance
-// functor (i.e. default_prev above).
+// The "r" reverse variants use default_prev<>.
 template <typename NODE, class NEXT = default_next<NODE>, typename LIST=NODE*>
-LinkedListIterator<NODE, NEXT> begin(LIST list) {
+LinkedListIterator<NODE, NEXT> begin(LIST& list) {
   return LinkedListIterator<NODE, NEXT>(list);
 }
-// template <typename NODE , class NEXT = default_next<NODE>, typename LIST=NODE*>
-// LinkedListIterator<const NODE, NEXT> begin(const LIST list) {
-//   return LinkedListIterator<NODE, NEXT>(list);
-// }
 template <typename NODE, class NEXT = default_next<NODE>, typename LIST=NODE*>
-LinkedListIterator<const NODE, NEXT> cbegin(const LIST list) {
+LinkedListIterator<const NODE, NEXT> cbegin(const LIST& list) {
+  return LinkedListIterator<NODE, NEXT>(list);
+}
+
+template <typename NODE, class NEXT = default_prev<NODE>, typename LIST=NODE*>
+LinkedListIterator<NODE, NEXT> rbegin(LIST& list) {
+  return LinkedListIterator<NODE, NEXT>(list);
+}
+template <typename NODE, class NEXT = default_prev<NODE>, typename LIST=NODE*>
+LinkedListIterator<const NODE, NEXT> crbegin(const LIST& list) {
   return LinkedListIterator<NODE, NEXT>(list);
 }
 
 template <typename NODE, class NEXT = default_next<NODE>, typename LIST=NODE*>
-LinkedListIterator<NODE, NEXT> end(LIST list) {
+LinkedListIterator<NODE, NEXT> end(LIST& list) {
   return LinkedListIterator<NODE, NEXT>(nullptr);
 }
-// template <typename NODE, class NEXT = default_next<NODE>, typename LIST=NODE*>
-// LinkedListIterator<const NODE, NEXT> end(const LIST list) {
-//   return LinkedListIterator<NODE, NEXT>(nullptr);
-// }
 template <typename NODE, class NEXT = default_next<NODE>, typename LIST=NODE*>
-LinkedListIterator<const NODE, NEXT> cend(const LIST list) {
+LinkedListIterator<const NODE, NEXT> cend(const LIST& list) {
+  return LinkedListIterator<NODE, NEXT>(nullptr);
+}
+
+template <typename NODE, class NEXT = default_prev<NODE>, typename LIST=NODE*>
+LinkedListIterator<NODE, NEXT> rend(LIST& list) {
+  return LinkedListIterator<NODE, NEXT>(nullptr);
+}
+template <typename NODE, class NEXT = default_prev<NODE>, typename LIST=NODE*>
+LinkedListIterator<const NODE, NEXT> crend(const LIST& list) {
   return LinkedListIterator<NODE, NEXT>(nullptr);
 }
 
