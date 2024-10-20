@@ -9,24 +9,21 @@ extern "C" {
 #include <algorithm>
 #include <cstdlib>
 #include <iostream>
+#include <vector>
 
 // Can you traverse the container using the iterators
 template <typename ITER>
-bool manual_iteration(ITER it, size_t count, const int *comp_ary) {
-  const auto end_it = end<typename ITER::value_type,
-			  typename ITER::next_type>(&(*it));
-
-  size_t i = count;
-  while (it != end_it)
+bool manual_iteration(ITER first, ITER last, const std::vector<int>& comp_data) {
+  size_t i = comp_data.size();
+  while (first != last)
     {
       --i;
-      if (it->payload != comp_ary[i])
+      if (first->payload != comp_data[i])
         return false;
 
-      ++it;
+      ++first;
   }
   return (i == 0);
-
 }
 
 // Can you use the container with (at elast some of) the algorithms header
@@ -42,30 +39,30 @@ ITER find_in_list(ITER begin, ITER end, VALUE_T val)
 // Try some iterator operation on the naive stack
 bool test_stack()
 {
-  const int test_data[] = {2, 3, 5, 7, 11, 13};
-  const size_t test_data_count = sizeof(test_data) / sizeof(test_data[0]);
+  const auto test_data = std::vector<int>{2, 3, 5, 7, 11, 13};
 
   std::cout << "Testing against the naive stack..." << std::endl;
   stack_node *stack = nullptr;
   assert(begin<stack_node>(stack) == end<stack_node>(stack));
-  for (size_t i = 0; i < test_data_count; ++i) {
+  for (size_t i = 0; i < test_data.size(); ++i) {
     stack_push(test_data[i], &stack);
   }
   assert(begin<stack_node>(stack) != end<stack_node>(stack));
 
-  assert(manual_iteration(LinkedListIterator<stack_node>(stack),
-                          test_data_count, test_data));
+  assert(manual_iteration(begin<stack_node>(stack), end<stack_node>(stack),
+                          test_data));
 
-  const auto it_13 = find_in_list(LinkedListIterator<stack_node>(stack),
-				  LinkedListIterator<stack_node>(nullptr), 13);
+  const auto it_13 =
+      find_in_list(begin<stack_node>(stack), end<stack_node>(stack), 13);
   assert(it_13 == stack);
 
-  const auto it_9 = find_in_list(LinkedListIterator<stack_node>(stack),
-				  LinkedListIterator<stack_node>(nullptr), 9);
+  const auto it_9 =       find_in_list(begin<stack_node>(stack), end<stack_node>(stack), 9);
+
   assert(it_9 == LinkedListIterator<stack_node>(nullptr));
 
-  auto it_2 = find_in_list(LinkedListIterator<stack_node>(stack),
-				  LinkedListIterator<stack_node>(nullptr), 2);
+  auto it_2 =
+          find_in_list(begin<stack_node>(stack), end<stack_node>(stack), 2);
+
   assert(it_2 != stack);
   assert(it_2 != LinkedListIterator<stack_node>(nullptr));
   assert(++it_2 == LinkedListIterator<stack_node>(nullptr));
@@ -106,14 +103,13 @@ LinkedListIterator<deque_node, default_prev<deque_node>> rend(dl_deque &list) {
 // Try operations against the deque
 bool test_deque()
 {
-  const int test_data[] = {2, 3, 5, 7, 11, 13};
-  const size_t test_data_count = sizeof(test_data) / sizeof(test_data[0]);
+  const auto test_data = std::vector<int>{2, 3, 5, 7, 11, 13};
 
   std::cout << "Testing against the more structured deque..." << std::endl;
   dl_deque deque;
   init_deque_in_place(&deque);
   assert(begin<deque_node>(deque) == end<deque_node>(deque));
-  for (size_t i = 0; i < test_data_count; ++i) {
+  for (size_t i = 0; i < test_data.size(); ++i) {
     deque_push_front(test_data[i], &deque);
   }
   assert(begin<deque_node>(deque) != end<deque_node>(deque));
