@@ -30,8 +30,10 @@ bool manual_iteration(ITER first, ITER last, const std::vector<int>& comp_data) 
 template <typename ITER, typename VALUE_T>
 ITER find_in_list(ITER begin, ITER end, VALUE_T val)
 {
-  auto it = std::find_if(
-      begin, end, [val](const stack_node &n) { return n.payload == val; });
+  auto it = std::find_if(begin, end, [val](typename ITER::value_type &n) {
+    return n.payload == val;
+  });
+
   return it;
 }
 
@@ -56,16 +58,14 @@ bool test_stack()
       find_in_list(begin<stack_node>(stack), end<stack_node>(stack), 13);
   assert(it_13 == stack);
 
-  const auto it_9 =       find_in_list(begin<stack_node>(stack), end<stack_node>(stack), 9);
-
-  assert(it_9 == LinkedListIterator<stack_node>(nullptr));
+  const auto it_9 = find_in_list(begin<stack_node>(stack), end<stack_node>(stack), 9);
+  assert(it_9 == end<stack_node>(stack));
 
   auto it_2 =
           find_in_list(begin<stack_node>(stack), end<stack_node>(stack), 2);
-
   assert(it_2 != stack);
-  assert(it_2 != LinkedListIterator<stack_node>(nullptr));
-  assert(++it_2 == LinkedListIterator<stack_node>(nullptr));
+  assert(it_2 != end<stack_node>(stack));
+  assert(++it_2 == end<stack_node>(stack));
 
   return true;
 }
@@ -113,7 +113,27 @@ bool test_deque()
     deque_push_front(test_data[i], &deque);
   }
   assert(begin<deque_node>(deque) != end<deque_node>(deque));
-  
+
+  assert(manual_iteration(begin<deque_node>(deque), end<deque_node>(deque),
+                          test_data));
+
+  const std::vector<int> reversed_data(test_data.rbegin(), test_data.rend());
+  assert(manual_iteration(rbegin<deque_node>(deque), rend<deque_node>(deque),
+                          reversed_data));
+
+  const auto it_13 =
+    find_in_list(begin<deque_node>(deque), end<deque_node>(deque), 13);
+  assert(it_13 == begin<deque_node>(deque));
+
+  const auto it_9 = find_in_list(begin<deque_node>(deque), end<deque_node>(deque), 9);
+  assert(it_9 == end<deque_node>(deque));
+
+  auto it_2 =
+          find_in_list(begin<deque_node>(deque), end<deque_node>(deque), 2);
+  assert(it_2 != begin<deque_node>(deque));
+  assert(it_2 != end<deque_node>(deque));
+  assert(++it_2 == end<deque_node>(deque));
+
   return true;
 }
 
