@@ -8,7 +8,7 @@ extern "C" {
 
 #include <algorithm>
 #include <cstdlib>
-
+#include <iostream>
 
 // Can you traverse the container using the iterators
 template <typename ITER>
