@@ -5,6 +5,10 @@
 #include <stdbool.h>
 
 typedef struct stack_node stack_node;
+struct stack_node {
+  stack_node* next;
+  int payload;
+};
 
 bool stack_empty(stack_node* head);
 void stack_push(int value, stack_node** head);

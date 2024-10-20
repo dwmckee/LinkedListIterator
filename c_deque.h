@@ -8,7 +8,13 @@
 // A pure-c implementation could hide the node definition, but to use
 // the linked-list iterator, we need to have access to the raw node
 // pointers
-typedef struct deuqe_node deque_node;
+typedef struct deque_node deque_node;
+struct deque_node
+{
+  deque_node* next;
+  deque_node* prev;
+  int payload;
+};
 deque_node* init_deque_node_in_place(deque_node* node, int value);
 deque_node* create_deque_node_on_heap(int value);
 

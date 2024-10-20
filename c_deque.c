@@ -3,13 +3,6 @@
 #include <assert.h>
 #include <stdlib.h>
 
-struct deuqe_node
-{
-  deque_node* next;
-  deque_node* prev;
-  int payload;
-};
-
 deque_node *init_deque_node_in_place(deque_node *node, int value)
 {
   node->next = NULL;

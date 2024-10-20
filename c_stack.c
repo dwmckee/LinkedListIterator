@@ -3,11 +3,6 @@
 #include <assert.h>
 #include <stdlib.h>
 
-struct stack_node {
-  stack_node* next;
-  int payload;
-};
-
 stack_node* create_node(int payload)
 {
   stack_node* node = calloc(sizeof(stack_node),1);
