@@ -5,7 +5,6 @@ extern "C" {
 #include "c_deque.h"
 #include "c_stack.h"
 }
-#include "support.h"
 
 #include <algorithm>
 #include <cstdlib>
