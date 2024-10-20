@@ -8,6 +8,9 @@
 #include <iterator>
 #include <type_traits>
 
+namespace lli
+{
+
 ///////////////////////////////////////////////////////////////////////////////
 // The iterator type is templated on a functor for advancing to the next
 // available node. Here are implementations of the two most common cases.
@@ -136,4 +139,5 @@ LinkedListIterator<const NODE, NEXT> crend(const LIST& list) {
   return LinkedListIterator<NODE, NEXT>(nullptr);
 }
 
+}
 #endif//LINKEDLISTITERATOR_H

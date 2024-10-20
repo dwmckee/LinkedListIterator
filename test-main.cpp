@@ -11,6 +11,8 @@ extern "C" {
 #include <iostream>
 #include <vector>
 
+using namespace lli;
+
 // Can you traverse the container using the iterators
 template <typename ITER>
 bool manual_iteration(ITER first, ITER last, const std::vector<int>& comp_data) {
@@ -76,28 +78,32 @@ bool test_stack()
 // _will_ work). To that end, we write specialized templates here before
 // defining the deque tests
 template <>
-LinkedListIterator<deque_node> begin(dl_deque &list) {
+LinkedListIterator<deque_node> lli::begin(dl_deque &list) {
   default_next<deque_node> next;
   return LinkedListIterator<deque_node>(next(list.sentinal));
 }
 
 template <>
-LinkedListIterator<deque_node, default_prev<deque_node>> rbegin(dl_deque &list) {
+LinkedListIterator<deque_node, default_prev<deque_node>>
+lli::rbegin(dl_deque &list)
+{
   default_prev<deque_node> next;
-  return LinkedListIterator<deque_node, default_prev<deque_node>>(next(list.sentinal));
+  return LinkedListIterator<deque_node, default_prev<deque_node>>(
+      next(list.sentinal));
 }
 
 template <>
-LinkedListIterator<deque_node> end(dl_deque &list) {
+LinkedListIterator<deque_node> lli::end(dl_deque &list) {
   return LinkedListIterator<deque_node>(list.sentinal);
 }
 
 template <>
-LinkedListIterator<deque_node, default_prev<deque_node>> rend(dl_deque &list) {
-  return LinkedListIterator<deque_node, default_prev<deque_node>>(list.sentinal);
+LinkedListIterator<deque_node, default_prev<deque_node>>
+lli::rend(dl_deque &list)
+{
+  return LinkedListIterator<deque_node, default_prev<deque_node>>(
+      list.sentinal);
 }
-
-
 
 ///////////////////////////////////////////////////////////////////////////////
 // Try operations against the deque
